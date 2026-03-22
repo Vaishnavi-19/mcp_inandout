@@ -126,8 +126,24 @@ Think of the client as: "How does the app consume those capabilities?"
 uv run main.py
 ```
 
-For the current LangChain + MCP client example:
+For the current LangChain + MCP multi-server example:
 
 ```bash
 uv run langchain_client.py
 ```
+
+### Difference Between `main.py` Client and `langchain_client.py` Client
+
+- `main.py`:
+	Uses a low-level MCP client session (`ClientSession`) with manual lifecycle steps (`stdio_client` -> `initialize` -> `load_mcp_tools`).
+- `main.py`:
+	Connects to one local MCP server (`math_server.py`) over STDIO.
+- `main.py`:
+	Best for learning MCP internals and debugging the handshake/session flow.
+
+- `langchain_client.py`:
+	Uses `MultiServerMCPClient`, a higher-level adapter that manages multiple server connections for you.
+- `langchain_client.py`:
+	Aggregates tools from more than one server (for example math + weather) into one toolset for the agent.
+- `langchain_client.py`:
+	Best for application-style orchestration where an agent can choose from multiple MCP tool providers.
